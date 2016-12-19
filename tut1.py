@@ -28,8 +28,8 @@ def spider(max_pages):
 
 
             #print(href)
-
-            get_magnet_link(href)
+            if "S07" in title:
+                get_magnet_link(href)
         page +=1
 
 
@@ -41,20 +41,26 @@ def get_magnet_link(url):
     req = requests.get(url,headers=headers)
     plain_text = req.text
     soup = BeautifulSoup(plain_text)
-
+    link_list = []
     i = 1
 
-    while i < 3 :
-        for magnet in soup.findAll("a",{"title":"Get this torrent"}):
-            link = magnet.get("href")
 
-            webbrowser.open(link)
-            time.sleep(10)
-            i += 1
+    for magnet in soup.findAll("a",{"title":"Get this torrent"}):
+        link = magnet.get("href")
 
+        if link not in link_list:
+            link_list.append(link)
 
 
-#jhejeje
+
+    print(link_list)
+    for link in link_list:
+        webbrowser.open(link)
+        time.sleep(10)
+
+
+
+
 
 
 spider(1)
